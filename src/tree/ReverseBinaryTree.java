@@ -1,6 +1,7 @@
 package tree;
 
-import linkedlist.ListNode;
+
+import base.ListNode;
 
 /**
  * 输入一个链表，反转链表后，输出新链表的表头。

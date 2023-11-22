@@ -1,5 +1,7 @@
 package linkedlist;
 
+import base.ListNode;
+
 /**
  * Date: 2018/9/16 下午2:13
  * Author: qianhangkang
