@@ -36,4 +36,26 @@ public class TreeMain {
         return b1 && b2;
     }
 
+
+    // 1 2 3 4
+    public int numTrees(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+
+        int count = 0;
+
+        for (int i = 1; i <= n; i++) {
+            int left = numTrees(i - 1);
+            int right = numTrees(n - i);
+            count = count + left * right;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new TreeMain().numTrees(3));
+    }
+
 }
