@@ -106,14 +106,32 @@ public class DpMain {
     }
 
 
+    public int robCycle(int[] nums) {
+        int length = nums.length;
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+
+        // 第一天抢(最后一天不能抢)，变成 [2,length-1] 的子问题
+        // 第一天不抢(最后一天可以抢)，变成 [1,length] 的子问题
+
+        return Math.max(nums[0] + rob(Arrays.copyOfRange(nums, 2, length - 1)), rob(Arrays.copyOfRange(nums, 1, length)));
+    }
+
+
+
     public static void main(String[] args) {
 //        System.out.println(new DpMain().minPathSum(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
 
 //        System.out.println(new DpMain().maxSubArray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
 
-        System.out.println(new DpMain().rob(new int[]{2, 1, 1, 2}));
+//        System.out.println(new DpMain().rob(new int[]{2, 1, 1, 2}));
 //        System.out.println(new DpMain().rob(new int[]{1, 2, 3, 1}));
 //        System.out.println(new DpMain().rob(new int[]{1, 2}));
-
+        System.out.println(new DpMain().robCycle(new int[]{2, 3, 2}));
     }
 }
