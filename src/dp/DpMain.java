@@ -56,7 +56,7 @@ public class DpMain {
     }
 
 
-    public int maxSubArray(int[] nums) {
+    public int maxSubArrayDp(int[] nums) {
         int[] dp = new int[nums.length];
         dp[0] = nums[0];
         int max = dp[0];
@@ -123,15 +123,100 @@ public class DpMain {
     }
 
 
+    public int lengthOfLIS(int[] nums) {
+        int[] mem = new int[nums.length];
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            lengthOfLISDfs(nums, mem, i);
+            max = Math.max(max, mem[i]);
+
+        }
+        return max;
+    }
+
+    // [10,9,2,5,3,7,101,18]
+    public int lengthOfLISDfs(int[] nums, int[] mem, int start) {
+        if (start >= nums.length - 1) {
+            mem[start] = 1;
+            return 1;
+        }
+
+        if (mem[start] != 0) {
+            return mem[start];
+        }
+
+        int max = 1;
+        for (int i = start + 1; i < nums.length; i++) {
+            if (nums[i] > nums[start]) {
+                int len = lengthOfLISDfs(nums, mem, i) + 1;
+                max = Math.max(max, len);
+            }
+
+        }
+
+        mem[start] = max;
+        return max;
+    }
+
+    public int maxSubArrayDp2(int[] nums) {
+        int max = nums[0];
+        int preSubMax = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (preSubMax < 0) {
+                preSubMax = nums[i];
+            } else {
+                preSubMax = preSubMax + nums[i];
+            }
+            max = Math.max(preSubMax, max);
+        }
+        return max;
+    }
+
+    public int nthUglyNumber(int n) {
+        int[] dp = new int[n];
+        dp[0] = 1;
+
+        // 2
+        int a = 0;
+        // 3
+        int b = 0;
+        // 5
+        int c = 0;
+
+        for (int i = 1; i < n; i++) {
+            int min = Math.min(dp[a] * 2, Math.min(dp[b] * 3, dp[c] * 5));
+            dp[i] = min;
+            if (min == dp[a] * 2) {
+                a++;
+            }
+            if (min == dp[b] * 3) {
+                b++;
+            }
+            if (min == dp[c] * 5) {
+                c++;
+            }
+        }
+
+        return dp[n - 1];
+    }
+
+
+
+
 
     public static void main(String[] args) {
 //        System.out.println(new DpMain().minPathSum(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
 
-//        System.out.println(new DpMain().maxSubArray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
+//        System.out.println(new DpMain().maxSubArrayDp(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
+//        System.out.println(new DpMain().maxSubArrayDp2(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
 
 //        System.out.println(new DpMain().rob(new int[]{2, 1, 1, 2}));
 //        System.out.println(new DpMain().rob(new int[]{1, 2, 3, 1}));
 //        System.out.println(new DpMain().rob(new int[]{1, 2}));
-        System.out.println(new DpMain().robCycle(new int[]{2, 3, 2}));
+//        System.out.println(new DpMain().robCycle(new int[]{2, 3, 2}));
+
+//        System.out.println(new DpMain().lengthOfLIS(new int[]{0}));
+//        System.out.println(new DpMain().lengthOfLIS(new int[]{0,1,0,3,2,3}));
+        System.out.println(new DpMain().nthUglyNumber(11));
     }
 }
