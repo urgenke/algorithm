@@ -54,8 +54,40 @@ public class TreeMain {
         return count;
     }
 
+
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        if (left == null) {
+            flatten(right);
+        } else {
+            TreeNode treeNode = rightToTheEnd(root.left);
+            treeNode.right = right;
+            root.right = left;
+            root.left = null;
+            flatten(root.right);
+        }
+
+    }
+
+    public TreeNode rightToTheEnd(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        if (root.right == null) {
+            return root;
+        }
+        return rightToTheEnd(root.right);
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(new TreeMain().numTrees(3));
+//        System.out.println(new TreeMain().numTrees(3));
+        System.out.println(new TreeMain().flatten(););
     }
 
 }
