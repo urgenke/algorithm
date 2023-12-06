@@ -1619,6 +1619,46 @@ public class Main {
 
     }
 
+
+    public int hammingWeight(int n) {
+        int res = 0;
+        while (n != 0) {
+            if ((n & 1) == 1) {
+                res++;
+            }
+            n = n >>> 1;
+        }
+        return res;
+    }
+
+    public boolean isPowerOfTwo(int n) {
+        boolean res = false;
+        while (n != 0) {
+            if ((n & 1) == 1 && res) {
+                return false;
+            }
+            if ((n & 1) == 1 && !res) {
+                res = true;
+            }
+            n = n >>> 1;
+        }
+        return res;
+    }
+
+    public int getSum(int a, int b) {
+
+        return 0;
+    }
+
+    public int singleNumber(int[] nums) {
+        int res = 0;
+        for (int num : nums) {
+            res = res ^ num;
+        }
+        return res;
+    }
+
+
     public static void main(String[] args) {
         System.out.println(new Main().combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
     }
