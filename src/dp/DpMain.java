@@ -201,7 +201,29 @@ public class DpMain {
     }
 
 
+    public int maxProduct(int[] nums) {
+        int len = nums.length;
+        int max = nums[0];
+        // 以 i 结尾的最大连续子序列乘积
+        int[][] dp = new int[len][2];
+        // 第二个 0 代表正数，1代表负数
+        dp[0][0] = Math.max(max, 0);
+        dp[0][1] = Math.min(max, 0);
 
+        for (int i = 1; i < len; i++) {
+            if (nums[i] >= 0) {
+                dp[i][0] = Math.max(dp[i - 1][0] * nums[i], nums[i]);
+                dp[i][1] = Math.min(dp[i - 1][1] * nums[i], 0);
+            } else {
+                dp[i][0] = Math.max(dp[i - 1][1] * nums[i], 0);
+                dp[i][1] = Math.min(dp[i - 1][0] * nums[i], nums[i]);
+            }
+
+            max = Math.max(max, dp[i][0]);
+        }
+
+        return max;
+    }
 
 
     public static void main(String[] args) {
@@ -217,6 +239,8 @@ public class DpMain {
 
 //        System.out.println(new DpMain().lengthOfLIS(new int[]{0}));
 //        System.out.println(new DpMain().lengthOfLIS(new int[]{0,1,0,3,2,3}));
-        System.out.println(new DpMain().nthUglyNumber(11));
+//        System.out.println(new DpMain().nthUglyNumber(11));
+        System.out.println(new DpMain().maxProduct(new int[]{2, 3, -2, 4}));
+        System.out.println(new DpMain().maxProduct(new int[]{-2, 3, -4}));
     }
 }

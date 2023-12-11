@@ -87,7 +87,7 @@ public class TreeMain {
 
     public static void main(String[] args) {
 //        System.out.println(new TreeMain().numTrees(3));
-        System.out.println(new TreeMain().flatten(););
+//        System.out.println(new TreeMain().flatten(););
     }
 
 }
