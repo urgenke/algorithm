@@ -1659,8 +1659,41 @@ public class Main {
     }
 
 
+    public List<List<String>> groupAnagrams(String[] strs) {
+        return new ArrayList<>(Arrays.stream(strs).collect(Collectors.groupingBy(s -> {
+            char[] charArray = s.toCharArray();
+            Arrays.sort(charArray);
+            return new String(charArray);
+        })).values());
+    }
+
+    public int longestConsecutive(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int step = 1;
+        int max = 1;
+        int pre = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] - pre == 1) {
+                step++;
+            } else if (nums[i] - pre == 0) {
+                continue;
+            } else {
+                max = Math.max(max, step);
+                step = 1;
+            }
+            pre = nums[i];
+        }
+        max = Math.max(max, step);
+        return max;
+    }
+
     public static void main(String[] args) {
-        System.out.println(new Main().combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
+//        System.out.println(new Main().combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
+//        System.out.println(new Main().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
+        System.out.println(new Main().longestConsecutive(new int[]{9,1,4,7,3,-1,0,5,8,-1,6}));
     }
 
 }
