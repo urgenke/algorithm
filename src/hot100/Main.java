@@ -98,11 +98,102 @@ public class Main {
         return res;
     }
 
+    public int trap(int[] height) {
+        int maxHeight = height[0];
+        int curMax = height[0];
+        int s1 = 0;
+        for (int i = 0; i < height.length; i++) {
+            maxHeight = Math.max(maxHeight, height[i]);
+            curMax = Math.max(curMax, height[i]);
+            s1 = s1 + curMax;
+        }
+
+        int rectangle = height.length * maxHeight;
+        int s2 = 0;
+        curMax = 0;
+        int wallArea = 0;
+        for (int i = height.length - 1; i >= 0; i--) {
+            curMax = Math.max(curMax, height[i]);
+            s2 = s2 + curMax;
+            wallArea = wallArea + height[i];
+        }
+
+        return s1 + s2 - wallArea - rectangle;
+    }
+
+    public int trap2(int[] height) {
+        int length = height.length;
+        int[] before = new int[length];
+        before[0] = height[0];
+        int[] after = new int[length];
+        after[length - 1] = height[length - 1];
+
+        for (int i = 1; i < length; i++) {
+            before[i] = Math.max(height[i], before[i - 1]);
+        }
+
+        for (int i = length - 2; i >= 0; i--) {
+            after[i] = Math.max(height[i], after[i + 1]);
+        }
+
+        int res = 0;
+        for (int i = 0; i < length; i++) {
+            int h = Math.min(before[i], after[i]);
+            int t = h - height[i];
+            if (t > 0) {
+                res += t;
+            }
+        }
+        return res;
+    }
+
+
+    public int lengthOfLongestSubstring(String s) {
+        char[] charArray = s.toCharArray();
+        HashMap<Character, Integer> map = new HashMap<>();
+        int left = 0;
+        int max = 0;
+        for (int right = 0; right < charArray.length; right++) {
+            char c = charArray[right];
+            if (map.containsKey(c)) {
+                Integer count = map.get(c);
+                map.put(c, count + 1);
+                while (map.get(c) > 1) {
+                    Integer count2 = map.get(charArray[left]);
+                    map.put(charArray[left], count2 - 1);
+                    left++;
+                }
+
+            } else {
+                map.put(c, 1);
+            }
+            max = Math.max(max, right - left+1);
+        }
+        return max;
+    }
+
+    public int maxSubArray(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int max = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+            max = Math.max(max, dp[i]);
+        }
+        return max;
+    }
+
+
+
 
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
 //        System.out.println(new Main().threeSum(new int[]{0, 0, 0, 0}));
+//        System.out.println(new Main().trap(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}));
+//        System.out.println(new Main().maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4}));
+        System.out.println(new Main().lengthOfLongestSubstring("abcdabcddee"));
 
     }
 }
