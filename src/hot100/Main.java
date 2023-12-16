@@ -1,9 +1,8 @@
 package hot100;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import base.ListNode;
+
+import java.util.*;
 
 /**
  * @author : mocun
@@ -185,6 +184,63 @@ public class Main {
     }
 
 
+    public List<Integer> findAnagrams(String s, String p) {
+        int sLen = s.length();
+        int pLen = p.length();
+        if (sLen < pLen) {
+            return Collections.emptyList();
+        }
+
+        ArrayList<Integer> res = new ArrayList<>();
+        char[] pC = new char[26];
+        char[] sC = new char[26];
+        for (int i = 0; i < pLen; i++) {
+            pC[p.charAt(i) - 'a']++;
+            sC[s.charAt(i) - 'a']++;
+        }
+
+        if (Arrays.equals(pC, sC)) {
+            res.add(0);
+        }
+
+        int left = 0;
+        int right = pLen;
+        while (right < sLen) {
+            sC[s.charAt(left) - 'a']--;
+            sC[s.charAt(right) - 'a']++;
+
+            if (Arrays.equals(pC, sC)) {
+                res.add(left+1);
+            }
+
+            left++;
+            right++;
+        }
+        return res;
+    }
+
+
+
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null) {
+            return head;
+        }
+
+        ListNode cur = head;
+        ListNode pre =null;
+        ListNode next;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+
+        return pre;
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -193,7 +249,7 @@ public class Main {
 //        System.out.println(new Main().threeSum(new int[]{0, 0, 0, 0}));
 //        System.out.println(new Main().trap(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}));
 //        System.out.println(new Main().maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4}));
-        System.out.println(new Main().lengthOfLongestSubstring("abcdabcddee"));
-
+//        System.out.println(new Main().lengthOfLongestSubstring("abcdabcddee"));
+        System.out.println(new Main().findAnagrams("cbaebabacd", "abc"));
     }
 }
