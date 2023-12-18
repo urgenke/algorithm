@@ -166,7 +166,7 @@ public class Main {
             } else {
                 map.put(c, 1);
             }
-            max = Math.max(max, right - left+1);
+            max = Math.max(max, right - left + 1);
         }
         return max;
     }
@@ -210,7 +210,7 @@ public class Main {
             sC[s.charAt(right) - 'a']++;
 
             if (Arrays.equals(pC, sC)) {
-                res.add(left+1);
+                res.add(left + 1);
             }
 
             left++;
@@ -218,7 +218,6 @@ public class Main {
         }
         return res;
     }
-
 
 
     public ListNode reverseList(ListNode head) {
@@ -230,7 +229,7 @@ public class Main {
         }
 
         ListNode cur = head;
-        ListNode pre =null;
+        ListNode pre = null;
         ListNode next;
         while (cur != null) {
             next = cur.next;
@@ -262,8 +261,8 @@ public class Main {
             if (ints[i] == k) {
                 ans++;
             }
-            for (int j = i-1; j >= 0; j--) {
-                if (ints[i]-ints[j] == k) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (ints[i] - ints[j] == k) {
                     ans++;
                 }
             }
@@ -278,7 +277,7 @@ public class Main {
 
         for (int i = 0; i < numRows; i++) {
             ArrayList<Integer> list = new ArrayList<>();
-            for (int j = 0; j < i+1; j++) {
+            for (int j = 0; j < i + 1; j++) {
                 if (j == 0) {
                     list.add(1);
                     continue;
@@ -308,6 +307,52 @@ public class Main {
     }
 
 
+    public int numSquares(int n) {
+        Map<Integer, Integer> map = new HashMap<>();
+        return numSquaresDfs(n, map);
+    }
+
+    public int numSquaresDfs(int n, Map<Integer, Integer> map) {
+        if (map.containsKey(n)) {
+            return map.get(n);
+        }
+        if (n == 1) {
+            map.put(1, 1);
+            return 1;
+        }
+        int a = (int) Math.sqrt(n);
+        int min = Integer.MAX_VALUE;
+        for (int i = a; i >= 1; i--) {
+            if (a * a == n) {
+                min = 1;
+                break;
+            }
+            min = Math.min(numSquaresDfs(n - (i * i), map) + 1, min);
+        }
+        map.put(n, min);
+        return min;
+    }
+
+    // 递推
+    public int numSquares2(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 1; j * j <= i; j++) {
+                min = Math.min(min, dp[i - (j * j)] + 1);
+            }
+            dp[i] = min;
+        }
+        return dp[n];
+    }
+
+
+
+
+
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
@@ -318,6 +363,7 @@ public class Main {
 //        System.out.println(new Main().findAnagrams("cbaebabacd", "abc"));
 //        System.out.println(new Main().subarraySum(new int[]{1,-1,0}, 0));
 //        System.out.println(new Main().generate(5));
-        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
+//        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
+        System.out.println(new Main().numSquares2(12));
     }
 }
