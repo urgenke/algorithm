@@ -243,6 +243,71 @@ public class Main {
     }
 
 
+    public int subarraySum(int[] nums, int k) {
+        int len = nums.length;
+        if (len == 0) {
+            return 0;
+        }
+
+        int ans = 0;
+        int[] ints = new int[len];
+        ints[0] = nums[0];
+        for (int i = 1; i < len; i++) {
+            ints[i] = ints[i - 1] + nums[i];
+        }
+
+        // 1,2,3 k=3
+        // 1,3,6
+        for (int i = 0; i < len; i++) {
+            if (ints[i] == k) {
+                ans++;
+            }
+            for (int j = i-1; j >= 0; j--) {
+                if (ints[i]-ints[j] == k) {
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+
+    public List<List<Integer>> generate(int numRows) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+
+        for (int i = 0; i < numRows; i++) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int j = 0; j < i+1; j++) {
+                if (j == 0) {
+                    list.add(1);
+                    continue;
+                }
+                if (j == i) {
+                    list.add(1);
+                    continue;
+                }
+                List<Integer> integers = res.get(i - 1);
+                list.add(integers.get(j - 1) + integers.get(j));
+            }
+            res.add(list);
+        }
+        return res;
+    }
+
+    public int rob(int[] nums) {
+        int len = nums.length;
+        int[] dp = new int[len];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < len; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+        return dp[len - 1];
+    }
+
+
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
@@ -250,6 +315,9 @@ public class Main {
 //        System.out.println(new Main().trap(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}));
 //        System.out.println(new Main().maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4}));
 //        System.out.println(new Main().lengthOfLongestSubstring("abcdabcddee"));
-        System.out.println(new Main().findAnagrams("cbaebabacd", "abc"));
+//        System.out.println(new Main().findAnagrams("cbaebabacd", "abc"));
+//        System.out.println(new Main().subarraySum(new int[]{1,-1,0}, 0));
+//        System.out.println(new Main().generate(5));
+        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
     }
 }
