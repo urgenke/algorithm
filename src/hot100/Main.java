@@ -473,6 +473,39 @@ public class Main {
     }
 
 
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int i = matrix.length;
+        int j = matrix[0].length;
+
+        for (int m = 0, n = j - 1; m < i && n >= 0; ) {
+            if (matrix[m][n] == target) {
+                return true;
+            } else if (matrix[m][n] < target) {
+                m++;
+            } else {
+                n--;
+            }
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
@@ -485,15 +518,16 @@ public class Main {
 //        System.out.println(new Main().generate(5));
 //        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
 //        System.out.println(new Main().numSquares2(12));
+//        ListNode l1 = new ListNode(1);
+//        ListNode l2 = new ListNode(2);
+//        ListNode l3 = new ListNode(1);
+////        ListNode l4 = new ListNode(1);
+//        l1.next = l2;
+//        l2.next = l3;
+////        l3.next = l4;
+//
+//        System.out.println(new Main().isPalindrome3(l1));
 
-        ListNode l1 = new ListNode(1);
-        ListNode l2 = new ListNode(2);
-        ListNode l3 = new ListNode(1);
-//        ListNode l4 = new ListNode(1);
-        l1.next = l2;
-        l2.next = l3;
-//        l3.next = l4;
-
-        System.out.println(new Main().isPalindrome3(l1));
+        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
     }
 }
