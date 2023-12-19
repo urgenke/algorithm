@@ -349,8 +349,128 @@ public class Main {
         return dp[n];
     }
 
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        HashSet<ListNode> set = new HashSet<>();
+        ListNode cur = headA;
+        while (cur != null) {
+            set.add(cur);
+            cur = cur.next;
+        }
+        cur = headB;
+        while (cur != null) {
+            if (set.contains(cur)) {
+                return cur;
+            }
+            cur = cur.next;
+        }
+        return null;
+    }
+
+    public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
+        // 如果有交点，headA 走到头后从 headB 开始走，headB 同理
+        // 最后指针会相遇在交点
+
+        // 如果没有交点
+        // 1->2->3
+        // 4->5
+        // 最后都为 null
+
+        ListNode curA = headA;
+        ListNode curB = headB;
+
+        while (curA != curB) {
+            curA = curA == null ? headB : curA.next;
+            curB = curB == null ? headA : curB.next;
+        }
+        return curA;
+    }
 
 
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+
+        int count = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            count++;
+            cur = cur.next;
+        }
+        cur = head;
+        // 121
+        // 1221
+        LinkedList<Integer> stack = new LinkedList<>();
+        if (count % 2 == 0) {
+            while (cur != null && stack.size() < count / 2) {
+                stack.addLast(cur.val);
+                cur = cur.next;
+            }
+        } else {
+            while (cur != null && stack.size() < (count + 1) / 2) {
+                stack.addLast(cur.val);
+                cur = cur.next;
+            }
+            stack.removeLast();
+        }
+
+        while (cur != null) {
+            if (stack.size() > 0 && stack.pollLast() == cur.val) {
+                cur = cur.next;
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isPalindrome2(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        // 快慢指针
+        ListNode slow = head;
+        ListNode fast = head;
+
+        StringBuilder slowStr = new StringBuilder();
+        StringBuilder fastStr = new StringBuilder();
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = head;
+
+        while (slow != null) {
+            slowStr.append(slow.val);
+            fastStr.append(fast.val);
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return fastStr.toString().contentEquals(slowStr.reverse());
+    }
+
+    public boolean isPalindrome3(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        ListNode cur = head;
+        while (cur != null) {
+            list.add(cur.val);
+            cur = cur.next;
+        }
+        // 1221
+        // 121
+        for (int i = 0, j = list.size() - 1; i < list.size() / 2; i++, j--) {
+            if (list.get(i).equals(list.get(j))) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -364,6 +484,16 @@ public class Main {
 //        System.out.println(new Main().subarraySum(new int[]{1,-1,0}, 0));
 //        System.out.println(new Main().generate(5));
 //        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
-        System.out.println(new Main().numSquares2(12));
+//        System.out.println(new Main().numSquares2(12));
+
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(1);
+//        ListNode l4 = new ListNode(1);
+        l1.next = l2;
+        l2.next = l3;
+//        l3.next = l4;
+
+        System.out.println(new Main().isPalindrome3(l1));
     }
 }
