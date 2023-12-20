@@ -1,6 +1,7 @@
 package hot100;
 
 import base.ListNode;
+import base.TreeNode;
 
 import java.util.*;
 
@@ -532,7 +533,6 @@ public class Main {
     }
 
 
-
     public void setZeroes2(int[][] matrix) {
         // 空间复杂度为 o1
         int iL = matrix.length;
@@ -580,7 +580,6 @@ public class Main {
         }
 
     }
-
 
 
     public int[] maxSlidingWindow(int[] nums, int k) {
@@ -637,6 +636,85 @@ public class Main {
         }
 
         return res;
+    }
+
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        midView(root, list);
+        return list;
+    }
+
+    public void midView(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        midView(root.left, list);
+        list.add(root.val);
+        midView(root.right, list);
+    }
+
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return Math.max(maxDepth(root.left) + 1, maxDepth(root.right) + 1);
+    }
+
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        root.left = right;
+        root.right = left;
+        invertTree(left);
+        invertTree(right);
+        return root;
+    }
+
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetric(root.left, root.right);
+    }
+
+    public boolean isSymmetric(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left == null || right == null) {
+            return false;
+        }
+        if (left.val != right.val) {
+            return false;
+        }
+        return isSymmetric(left.right, right.left) && isSymmetric(left.left, right.right);
+    }
+
+
+    int max = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        maxDepth2(root);
+        return max;
+    }
+
+    public int maxDepth2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth2(root.left);
+        int right = maxDepth2(root.right);
+        max = Math.max(max, left + right);
+        return Math.max(left, right) + 1;
     }
 
 
