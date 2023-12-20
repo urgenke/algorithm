@@ -487,8 +487,6 @@ public class Main {
     }
 
 
-
-
     public boolean searchMatrix(int[][] matrix, int target) {
         int i = matrix.length;
         int j = matrix[0].length;
@@ -504,6 +502,88 @@ public class Main {
         }
         return false;
     }
+
+
+    public void setZeroes(int[][] matrix) {
+        // 行
+        Set<Integer> rows = new HashSet<>();
+        // 列
+        Set<Integer> cols = new HashSet<>();
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    rows.add(i);
+                    cols.add(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (rows.contains(i)) {
+                    matrix[i][j] = 0;
+                }
+                if (cols.contains(j)) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+
+
+
+    public void setZeroes2(int[][] matrix) {
+        // 空间复杂度为 o1
+        int iL = matrix.length;
+        int jL = matrix[0].length;
+
+        boolean row = false;
+        boolean col = false;
+
+        for (int i = 0; i < iL; i++) {
+            for (int j = 0; j < jL; j++) {
+                if (matrix[i][j] == 0) {
+                    if (i == 0) {
+                        row = true;
+                    }
+                    if (j == 0) {
+                        col = true;
+                    }
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 1; i < iL; i++) {
+            for (int j = 1; j < jL; j++) {
+                if (matrix[i][0] == 0) {
+                    matrix[i][j] = 0;
+                }
+                if (matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        if (row) {
+            for (int j = 0; j < jL; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+
+        if (col) {
+            for (int i = 0; i < iL; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+
+    }
+
+
+
+
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -528,6 +608,7 @@ public class Main {
 //
 //        System.out.println(new Main().isPalindrome3(l1));
 
-        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
+//        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
+        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
     }
 }
