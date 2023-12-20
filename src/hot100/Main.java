@@ -583,7 +583,61 @@ public class Main {
 
 
 
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int left = 0;
+        int right = k - 1;
+        int len = nums.length;
+        int resLen = len - k;
+        int[] res = new int[resLen + 1];
+        // 最大值的次数
+        int max = Integer.MIN_VALUE;
+        int maxCount = 0;
+        for (int i = left; i <= right; i++) {
+            if (nums[i] > max) {
+                max = nums[i];
+                maxCount = 1;
+            } else if (nums[i] == max) {
+                maxCount++;
+            }
+        }
+        res[0] = max;
 
+
+        for (int i = 1; i + k - 1 <= len - 1; i++) {
+            int preKey = nums[i - 1];
+            int afterKey = nums[i + k - 1];
+            if (preKey == afterKey) {
+                res[i] = max;
+                continue;
+            }
+
+            if (afterKey > max) {
+                max = afterKey;
+                maxCount = 1;
+            } else if (afterKey == max) {
+                maxCount++;
+            } else {
+                if (preKey >= max) {
+                    maxCount--;
+                    if (maxCount == 0) {
+                        max = Integer.MIN_VALUE;
+                        for (int j = i; j <= i + k - 1; j++) {
+                            if (nums[j] > max) {
+                                max = nums[j];
+                                maxCount = 1;
+                            } else if (nums[j] == max) {
+                                maxCount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            res[i] = max;
+        }
+
+        return res;
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -598,6 +652,9 @@ public class Main {
 //        System.out.println(new Main().generate(5));
 //        System.out.println(new Main().rob(new int[]{2, 1, 1, 2}));
 //        System.out.println(new Main().numSquares2(12));
+//        System.out.println(Arrays.toString(new Main().maxSlidingWindow(new int[]{1, 3, 1, 2, 0, 5}, 3)));
+//        System.out.println(Arrays.toString(new Main().maxSlidingWindow(new int[]{1, -1}, 1)));
+//        System.out.println(new Main().numSquares2(12));
 //        ListNode l1 = new ListNode(1);
 //        ListNode l2 = new ListNode(2);
 //        ListNode l3 = new ListNode(1);
@@ -609,6 +666,6 @@ public class Main {
 //        System.out.println(new Main().isPalindrome3(l1));
 
 //        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
-        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
+//        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
     }
 }
