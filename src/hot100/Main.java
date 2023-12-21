@@ -699,6 +699,7 @@ public class Main {
 
 
     int max = 0;
+
     public int diameterOfBinaryTree(TreeNode root) {
         if (root == null) {
             return 0;
@@ -715,6 +716,28 @@ public class Main {
         int right = maxDepth2(root.right);
         max = Math.max(max, left + right);
         return Math.max(left, right) + 1;
+    }
+
+
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) {
+            return new int[0][0];
+        }
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        for (int i = 0; i < intervals.length; i++) {
+            if (i + 1 < intervals.length) {
+                // 当前和后面的相交
+                // 当前数组和后面数组合并
+                // 当前数组置为空
+                if (intervals[i][0] <= intervals[i + 1][0] && intervals[i][1] >= intervals[i + 1][0]) {
+                    intervals[i + 1][0] = intervals[i][0];
+                    intervals[i + 1][1] = Math.max(intervals[i][1], intervals[i + 1][1]);
+                    intervals[i] = new int[0];
+                }
+            }
+        }
+
+        return Arrays.stream(intervals).filter(a -> a.length != 0).toArray(int[][]::new);
     }
 
 
@@ -745,5 +768,6 @@ public class Main {
 
 //        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
 //        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
+        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
     }
 }
