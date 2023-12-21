@@ -741,6 +741,47 @@ public class Main {
     }
 
 
+    public int maximalSquare(char[][] matrix) {
+        int i = matrix.length;
+        int j = matrix[0].length;
+        // 正方形可能的最大边长
+        int sideLimit = Math.min(i, j);
+        // 从最大的边长开始遍历
+        // 有一个符合就可以直接返回
+        int curSide = sideLimit;
+        while (curSide > 0) {
+            boolean match = false;
+            for (int m = 0; m + curSide - 1 < i; m++) {
+                for (int n = 0; n + curSide - 1 < j; n++) {
+                    if (isSquareMatch(matrix, m, n, curSide)) {
+                        match = true;
+                        break;
+                    }
+                }
+                if (match) {
+                    break;
+                }
+            }
+            if (match) {
+                break;
+            }
+            curSide--;
+        }
+        return curSide * curSide;
+    }
+
+    public boolean isSquareMatch(char[][] matrix, int m, int n, int side) {
+        for (int i = 0; i < side; i++) {
+            for (int j = 0; j < side; j++) {
+                if (matrix[m + i][n + j] == '0') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
@@ -768,6 +809,7 @@ public class Main {
 
 //        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
 //        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
-        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
+//        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
+        System.out.println(new Main().maximalSquare(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
     }
 }
