@@ -740,45 +740,65 @@ public class Main {
         return Arrays.stream(intervals).filter(a -> a.length != 0).toArray(int[][]::new);
     }
 
+//    public void rotate(int[] nums, int k) {
+//        int len = nums.length;
+//        if (len == 0) {
+//            return;
+//        }
+//        if (k >= len && k % len == 0) {
+//            return;
+//        }
+//
+//        int temp = 0;
+//        for (int i = 0; i < k; i++) {
+//            int offset = k % len;
+//            int swapIndex = i + offset;
+//            if (swapIndex >= len) {
+//                swapIndex = ((i + offset) % len);
+//            }
+//            temp = nums[i];
+//            nums[i] = nums[swapIndex];
+//            nums[swapIndex] = temp;
+//        }
+//        // 1,2,3,4,5,6,7
+//        // 5,6,7,1,2,3,4
+//
+//
+//        System.out.println(temp);
+//    }
+
 
     public int maximalSquare(char[][] matrix) {
         int i = matrix.length;
         int j = matrix[0].length;
-        // 正方形可能的最大边长
-        int sideLimit = Math.min(i, j);
-        // 从最大的边长开始遍历
-        // 有一个符合就可以直接返回
-        int curSide = sideLimit;
-        while (curSide > 0) {
-            boolean match = false;
-            for (int m = 0; m + curSide - 1 < i; m++) {
-                for (int n = 0; n + curSide - 1 < j; n++) {
-                    if (isSquareMatch(matrix, m, n, curSide)) {
-                        match = true;
-                        break;
+        // 以 x,y 作为正方形右下角的最大变长
+        int[][] dp = new int[i][j];
+        int maxSide = 0;
+        for (int m = 0; m < i; m++) {
+            for (int n = 0; n < j; n++) {
+                if (matrix[m][n] == '1') {
+                    int top = 0;
+                    if (m - 1 >= 0) {
+                        top = dp[m - 1][n];
                     }
-                }
-                if (match) {
-                    break;
-                }
-            }
-            if (match) {
-                break;
-            }
-            curSide--;
-        }
-        return curSide * curSide;
-    }
+                    int left = 0;
+                    if (n - 1 >= 0) {
+                        left = dp[m][n - 1];
+                    }
+                    // 对角
+                    int diagonal = 0;
+                    if (m - 1 >= 0 && n - 1 >= 0) {
+                        diagonal = dp[m - 1][n - 1];
+                    }
 
-    public boolean isSquareMatch(char[][] matrix, int m, int n, int side) {
-        for (int i = 0; i < side; i++) {
-            for (int j = 0; j < side; j++) {
-                if (matrix[m + i][n + j] == '0') {
-                    return false;
+                    dp[m][n] = Math.min(Math.min(top, left), diagonal) + 1;
+                    maxSide = Math.max(maxSide, dp[m][n]);
+                } else {
+                    dp[m][n] = 0;
                 }
             }
         }
-        return true;
+        return maxSide * maxSide;
     }
 
 
@@ -809,6 +829,8 @@ public class Main {
 
 //        System.out.println(new Main().searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}, 5));
 //        new Main().setZeroes(new int[][]{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}});
+//        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
+//        new Main().rotate(new int[]{1, 2, 3, 4, 5, 6, 7}, 3);
 //        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
         System.out.println(new Main().maximalSquare(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
     }
