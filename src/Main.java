@@ -1690,10 +1690,37 @@ public class Main {
         return max;
     }
 
+    public int trap(int[] height) {
+        int len = height.length;
+        if (len == 0) {
+            return 0;
+        }
+        int[] before = new int[len];
+        int[] after = new int[len];
+        int support = height[0];
+        for (int i = 0; i < len; i++) {
+            support = Math.max(height[i], support);
+            before[i] = support;
+        }
+
+        support = height[len - 1];
+        for (int i = len - 1; i >= 0; i--) {
+            support = Math.max(height[i], support);
+            after[i] = support;
+        }
+        int res = 0;
+        for (int i = 0; i < len; i++) {
+            res = res + Math.max(Math.min(before[i],after[i]) - height[i], 0);
+        }
+        return res;
+    }
+
+
     public static void main(String[] args) {
 //        System.out.println(new Main().combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
 //        System.out.println(new Main().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
-        System.out.println(new Main().longestConsecutive(new int[]{9,1,4,7,3,-1,0,5,8,-1,6}));
+//        System.out.println(new Main().longestConsecutive(new int[]{9,1,4,7,3,-1,0,5,8,-1,6}));
+        System.out.println(new Main().trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}));
     }
 
 }
