@@ -740,34 +740,6 @@ public class Main {
         return Arrays.stream(intervals).filter(a -> a.length != 0).toArray(int[][]::new);
     }
 
-//    public void rotate(int[] nums, int k) {
-//        int len = nums.length;
-//        if (len == 0) {
-//            return;
-//        }
-//        if (k >= len && k % len == 0) {
-//            return;
-//        }
-//
-//        int temp = 0;
-//        for (int i = 0; i < k; i++) {
-//            int offset = k % len;
-//            int swapIndex = i + offset;
-//            if (swapIndex >= len) {
-//                swapIndex = ((i + offset) % len);
-//            }
-//            temp = nums[i];
-//            nums[i] = nums[swapIndex];
-//            nums[swapIndex] = temp;
-//        }
-//        // 1,2,3,4,5,6,7
-//        // 5,6,7,1,2,3,4
-//
-//
-//        System.out.println(temp);
-//    }
-
-
     public int maximalSquare(char[][] matrix) {
         int i = matrix.length;
         int j = matrix[0].length;
@@ -802,6 +774,65 @@ public class Main {
     }
 
 
+    public void rotate(int[] nums, int k) {
+        int len = nums.length;
+        if (len == 0) {
+            return;
+        }
+        if (k % len == 0) {
+            return;
+        }
+        k = k % len;
+        reverse(nums, 0, len - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, len - 1);
+    }
+
+    public void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[end];
+            nums[end] = nums[start];
+            nums[start] = temp;
+            start++;
+            end--;
+        }
+
+    }
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.addFirst(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode treeNode = queue.pollFirst();
+                TreeNode left = treeNode.left;
+                if (left != null) {
+                    queue.addLast(left);
+                }
+                TreeNode right = treeNode.right;
+                if (right!=null) {
+                    queue.addLast(right);
+                }
+                list.add(treeNode.val);
+            }
+            res.add(list);
+        }
+
+        return res;
+    }
+
+
+
+
+
     public static void main(String[] args) throws InterruptedException {
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
@@ -832,6 +863,7 @@ public class Main {
 //        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
 //        new Main().rotate(new int[]{1, 2, 3, 4, 5, 6, 7}, 3);
 //        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
-        System.out.println(new Main().maximalSquare(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
+//        System.out.println(new Main().maximalSquare(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
+//        new Main().rotate(new int[]{-1, -100, 3, 99}, 2);
     }
 }
