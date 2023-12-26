@@ -818,7 +818,7 @@ public class Main {
                     queue.addLast(left);
                 }
                 TreeNode right = treeNode.right;
-                if (right!=null) {
+                if (right != null) {
                     queue.addLast(right);
                 }
                 list.add(treeNode.val);
@@ -846,6 +846,31 @@ public class Main {
     }
 
 
+    public int maxProduct(int[] nums) {
+        int len = nums.length;
+        // 以 i 结尾的最大或最小值（负数），0代表负数，1代表正数
+        int[][] dp = new int[len][2];
+        int num = nums[0];
+        dp[0][1] = Math.max(num, 0);
+        dp[0][0] = Math.min(num, 0);
+        int max = nums[0];
+        for (int i = 1; i < len; i++) {
+            int v = nums[i];
+            if (v == 0) {
+                dp[i][0] = 0;
+                dp[i][1] = 0;
+            } else if (v > 0) {
+                dp[i][1] = Math.max(dp[i - 1][1] * v, v);
+                dp[i][0] = dp[i - 1][0] * v;
+            } else {
+                dp[i][1] = dp[i - 1][0] * v;
+                dp[i][0] = Math.min(dp[i - 1][1] * v, v);
+            }
+            max = Math.max(max, dp[i][1]);
+        }
+
+        return max;
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -880,5 +905,8 @@ public class Main {
 //        new Main().merge(new int[][]{{2, 3}, {1, 6}, {8, 10}, {15, 18}});
 //        System.out.println(new Main().maximalSquare(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
 //        new Main().rotate(new int[]{-1, -100, 3, 99}, 2);
+        System.out.println(new Main().maxProduct(new int[]{2, 3, -2, 4}));
+        System.out.println(new Main().maxProduct(new int[]{2, 3, -2, 4, -100}));
+        System.out.println(new Main().maxProduct(new int[]{0, 2}));
     }
 }
