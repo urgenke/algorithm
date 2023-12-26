@@ -845,7 +845,6 @@ public class Main {
         return dp[n];
     }
 
-
     public int maxProduct(int[] nums) {
         int len = nums.length;
         // 以 i 结尾的最大或最小值（负数），0代表负数，1代表正数
@@ -869,6 +868,42 @@ public class Main {
             max = Math.max(max, dp[i][1]);
         }
 
+        return max;
+    }
+
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, 10000);
+        dp[0] = 0;
+
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin < 0) {
+                    continue;
+                }
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+        return amount == 0 ? 0 : dp[amount] == 10000 ? -1 : dp[amount];
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int len = nums.length;
+        if (len <= 1) {
+            return len;
+        }
+
+        int[] dp = new int[len];
+        Arrays.fill(dp, 1);
+        int max = 1;
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            max = Math.max(max, dp[i]);
+        }
         return max;
     }
 
@@ -908,5 +943,10 @@ public class Main {
         System.out.println(new Main().maxProduct(new int[]{2, 3, -2, 4}));
         System.out.println(new Main().maxProduct(new int[]{2, 3, -2, 4, -100}));
         System.out.println(new Main().maxProduct(new int[]{0, 2}));
+//        System.out.println(new Main().coinChange(new int[]{2}, 3));
+//        System.out.println(new Main().coinChange(new int[]{2}, 4));
+//        System.out.println(new Main().coinChange(new int[]{1,2,5}, 11));
+//        System.out.println(new Main().coinChange(new int[]{2}, 1));
+        System.out.println(new Main().lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
     }
 }
