@@ -946,6 +946,56 @@ public class Main {
         return i;
     }
 
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode l1 = list1;
+        ListNode l2 = list2;
+        ListNode head = new ListNode();
+        ListNode node = head;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                node.next = new ListNode(l1.val);
+                node = node.next;
+                l1 = l1.next;
+            } else {
+                node.next = new ListNode(l2.val);
+                node = node.next;
+                l2 = l2.next;
+            }
+        }
+        if (l1 != null) {
+            node.next = l1;
+        }
+        if (l2 != null) {
+            node.next = l2;
+        }
+
+        return head.next;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode();
+        ListNode node = head;
+
+        int temp = 0;
+        while (l1 != null || l2 != null) {
+            int v1 = l1 == null ? 0 : l1.val;
+            int v2 = l2 == null ? 0 : l2.val;
+            int sum = v1 + v2 + temp;
+            int value = sum % 10;
+            temp = sum / 10;
+            node.next = new ListNode(value);
+            node = node.next;
+            l1 = l1 == null ? l1 : l1.next;
+            l2 = l2 == null ? l2 : l2.next;
+        }
+        if (temp > 0) {
+            node.next = new ListNode(temp);
+        }
+
+        return head.next;
+    }
+
 
 //    public boolean wordBreak(String s, List<String> wordDict) {
 //        if (s.isEmpty()) {
@@ -962,6 +1012,7 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+        System.out.println(0 % 10);
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
 //        System.out.println(new Main().threeSum(new int[]{0, 0, 0, 0}));
@@ -1003,6 +1054,6 @@ public class Main {
 //        System.out.println(new Main().lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
 //        System.out.println(new Main().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
 //        System.out.println(new Main().searchMatrix2(new int[][]{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}}, 13));
-        System.out.println(new Main().searchInsert(new int[]{1, 3, 5, 6}, 2));
+//        System.out.println(new Main().searchInsert(new int[]{1, 3, 5, 6}, 2));
     }
 }
