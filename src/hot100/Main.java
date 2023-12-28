@@ -997,22 +997,41 @@ public class Main {
     }
 
 
-//    public boolean wordBreak(String s, List<String> wordDict) {
-//        if (s.isEmpty()) {
-//            return true;
-//        }
-//        if (wordDict.isEmpty()) {
-//            return false;
-//        }
-//
-//        int[] dp = new int[s.length()];
-//
-//
-//    }
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s.isEmpty()) {
+            return true;
+        }
+        if (wordDict.isEmpty()) {
+            return false;
+        }
+        Set<String> sets = new HashSet<>(wordDict);
+        int min = Integer.MAX_VALUE;
+        for (String word : wordDict) {
+            min = Math.min(min, word.length());
+        }
+
+
+        // 以 i 结尾的字符串是否可以被 break
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+
+        // 转移方程
+        // 字符串分为 0-j,j-i
+        // dp[j] 为 true 且 j-i 的字符串在 wordDict 中
+        for (int i = 1; i <= s.length(); i++) {
+            // 直接从最小单词长度开始判断，不然肯定不在 set 中
+            for (int j = i - min; j >= 0; j--) {
+                dp[i] = dp[j] && sets.contains(s.substring(j, i));
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println(0 % 10);
 //        new Main().moveZeroes(new int[]{0, 1, 0, 3, 12});
 //        System.out.println(new Main().maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
 //        System.out.println(new Main().threeSum(new int[]{0, 0, 0, 0}));
@@ -1052,8 +1071,9 @@ public class Main {
 //        System.out.println(new Main().coinChange(new int[]{1,2,5}, 11));
 //        System.out.println(new Main().coinChange(new int[]{2}, 1));
 //        System.out.println(new Main().lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
-//        System.out.println(new Main().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
 //        System.out.println(new Main().searchMatrix2(new int[][]{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}}, 13));
 //        System.out.println(new Main().searchInsert(new int[]{1, 3, 5, 6}, 2));
+        System.out.println(new Main().wordBreak("leetcode", Arrays.asList("leet", "code")));
+        System.out.println(new Main().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
     }
 }
